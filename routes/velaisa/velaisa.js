@@ -9,15 +9,19 @@ router.use(fileUpload({
 }));
 
 const { cargaProducto } = require('./cargarProductos')
-const { recuperaCatalogoProductos, recuperaDatosProducto } = require('./recuperaDatosProductos')
+const { recuperaCatalogoVelas, recuperaDatosVelas } = require('./recuperaDatosProductos')
 const { recuperaCategorias } = require('./recuperaCategorias');
 const { enviarCorreo } = require('./enviarCorreo');
+const { pagos } = require('./pagos');
+const { getVelaisa } = require('./getVelaisa');
 
-router.get('/recuperaDatosProducto/:noProducto', recuperaDatosProducto)
-router.get('/recuperaCatalogoProductos/:categoria', recuperaCatalogoProductos)
+router.get('/', getVelaisa),
+router.get('/recuperaDatosVelas/:codigoInterno', recuperaDatosVelas)
+router.get('/recuperaCatalogoVelas', recuperaCatalogoVelas)
 router.get('/recuperaCategorias', recuperaCategorias)
 
 router.post('/enviarCorreo', enviarCorreo)
 router.post('/cargaProducto', cargaProducto)
+router.post('/pago', pagos)
 
 module.exports = router;

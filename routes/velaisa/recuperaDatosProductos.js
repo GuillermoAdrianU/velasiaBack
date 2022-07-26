@@ -8,29 +8,16 @@ var dbVelaisa = require('../../conexiones/basesDeDatos').of('velaisa')
 var f = require('../../funciones')
 
 module.exports = {
-    recuperaCatalogoProductos: async (req, res) => {
+    recuperaCatalogoVelas: async (req, res) => {
         let response = {
             replyCode: 200,
             replyText: "Productos recuperados",
             data: []
         }
 
-        let categoria = parseInt(req.params.categoria)
-
-        let query = `SELECT NO_PRODUCTO, NOMBRE_PRODUCTO, DESC_CORTA, IMG, IMG_BINARY, 
-                     CHICO, MEDIANO, GRANDE, PRECIO_CHICO, PRECIO_MEDIANO, 
-                     PRECIO_GRANDE, GRAMAGE_CHICO, GRAMAGE_MEDIANO, GRAMAGE_GRANDE,
-                     HRS_CHICO, HRS_MEDIANO, HRS_GRANDE, SIZE_CHICO, SIZE_MEDIANO,
-                     SIZE_GRANDE
-                     FROM PRODUCTOS
-                     WHERE CATEGORIA = ${categoria}`
-
-        if(!f.definido(categoria)) {
-            response.replyCode = 500;
-            response.replyText = 'Error en la solicitud de datos';
-            response.data = undefined;
-            res.status(500).send(response);
-        }
+        let query = `SELECT CODIGO_INTERNO, CATEGORIA, SUBCATEGORIA, NOMBRE,
+                     DESC_CORTA, IMG
+                     FROM VELAS`
 
         dbVelaisa.query(query, async(err, data) => {
             if(err) {
@@ -48,18 +35,18 @@ module.exports = {
         })
     }, 
 
-    recuperaDatosProducto: async (req, res) => {
+    recuperaDatosVelas: async (req, res) => {
         let response = {
             replyCode: 200,
             replyText: "Producto recuperado con exito",
             data: []
         }
 
-        let noProducto = parseInt(req.params.noProducto)
+        let noProducto = parseInt(req.params.codigoInterno)
 
         let query = `SELECT *
-                    FROM PRODUCTOS
-                    WHERE NO_PRODUCTO = ${noProducto}`
+                    FROM VELAS
+                    WHERE CODIGO_INTERNO = ${codigoInterno}`
 
         if(!f.definido(noProducto)) {
             response.replyCode = 500;
